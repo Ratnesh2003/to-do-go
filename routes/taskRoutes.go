@@ -8,4 +8,6 @@ import (
 
 func RegisterTaskRoutes(router *gin.Engine) {
 	router.POST("/task/", controllers.TaskCreate)
+	router.PUT("/task/complete/:id", controllers.TaskComplete)
+	router.PUT("/task/:id", controllers.TaskUpdate)
 }

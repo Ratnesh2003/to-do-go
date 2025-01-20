@@ -25,6 +25,44 @@ func TaskCreate(c *gin.Context) {
 	}
 
 	c.JSON(201, gin.H{
-		"message": task,
+		"task": task,
+	})
+}
+
+func TaskComplete(c *gin.Context) {
+	id := c.Param("id")
+	var task models.Task
+	configs.DB.First(&task, id)
+
+	configs.DB.Model(&task).Updates(models.Task{
+		IsCompleted: true,
+	})
+
+	c.JSON(200, gin.H{
+		"task": task,
+	})
+}
+
+func TaskUpdate(c *gin.Context) {
+	id := c.Param("id")
+	var task models.Task
+	configs.DB.First(&task, id)
+
+	var body struct {
+		Title       string
+		Description string
+		Deadline	time.Time
+	}
+
+	c.Bind(&body)
+
+	configs.DB.Model(&task).Updates(models.Task{
+		Title: body.Title,
+		Description: body.Description,
+		Deadline: body.Deadline,
+	})
+
+	c.JSON(200, gin.H{
+		"task": task,
 	})
 }
