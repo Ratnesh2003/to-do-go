@@ -66,3 +66,20 @@ func TaskUpdate(c *gin.Context) {
 		"task": task,
 	})
 }
+
+func TaskAll(c *gin.Context) {
+	var tasks []models.Task
+
+	configs.DB.Find(&tasks)
+
+	c.JSON(200, gin.H{
+		"tasks": tasks,
+	})
+}
+
+func TaskDelete(c *gin.Context) {
+	id := c.Param("id")
+	configs.DB.Delete(&models.Task{}, id)
+
+	c.Status(200)
+}
